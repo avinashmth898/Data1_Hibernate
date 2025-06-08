@@ -6,12 +6,14 @@
 <hibernate-configuration>
     <session-factory>
         <!-- Database connection settings -->
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/your_database</property>
-        <property name="hibernate.connection.username">your_username</property>
-        <property name="hibernate.connection.password">your_password</property>
+<!--        database configuration-->
 
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hiber</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root1234</property>
+        <property name="hibernate.connection.driver_class">com.mysql.dj.jdbc.Driver</property>
         <!-- JDBC dialect -->
+<!--        hibernate configuration-->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
         <!-- Show SQL in console -->
@@ -21,7 +23,8 @@
         <!-- Automatically create/update tables -->
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <!-- Mapping class -->
-        <mapping class="com.learn.hiber.YourEntityClass"/>
+        <!-- Mapping xml/class -->
+        <mapping class="com.learn.hiber.entities.Customer"/>
+
     </session-factory>
 </hibernate-configuration>
