@@ -168,3 +168,195 @@ Annotation	Purpose
 @NotNull, @Size, @Min, @Max	//Validation constraints on entity fields.
 @Pattern(regexp = "regex")	//Specifies a regex pattern for the field.
 ```
+
+```xml
+<!--YOUR CLASS NAME GOES AT THE PLACE OF "YourEntityClass"-->
+<mapping class="com.learn.hiber.YourEntityClass"/>
+<mapping class="com.learn.hiber.YourEntityClass"/>
+<mapping class="com.learn.hiber.YourEntityClass"/>
+<!--You can of course add multiple classes to the hibernate.cfg.xml file-->
+<!--In case you want to create multiple tables in single go.-->
+```
+**Singleton Object:-**
+
+A Singleton Object is a design pattern in object-oriented programming where only one instance of a class is created and shared throughout the entire application.
+
+So that Object is for **SessionFactory**, 
+Now to build a session factory,
+
+```java
+//Create a session factory object
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+private static SessionFactory sessionFactory;
+//Now Build a session factory
+sessionFactory=new Configuration.configure("hibernate.cfg.xml").buildSessionFactory();
+```
+The Singleton class for SessionFactory is
+```java
+package com.learn.hiber.util;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class HibernateUtil {
+    private static SessionFactory sessionFactory; // creating a variable of SessionFactory
+    static {
+        try {
+            if(sessionFactory==null)/*Since you need to create SessionFactory once*/{
+                sessionFactory=new Configuration().configure("Hibernate.cfg.xml").buildSessionFactory();
+//      with the above variable here building SessionFactory where Configuration says that configure the file
+//                with resource name "Hibernate.cfg.xml" and then build now.
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error in creating Session Factory"+e.getMessage());
+        }
+    }
+    public static SessionFactory getSessionFactory(){//this function is a getter of SessionFactory since build has been successfully
+//        done in the static block
+        return sessionFactory;
+    }
+}
+
+```
+
+Main.java
+```java
+package com.learn.hiber;
+
+import com.learn.hiber.entities.Customer;
+import com.learn.hiber.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+public class App {
+    public static void main(String[] args) {
+        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
+        // to see how IntelliJ IDEA suggests fixing it.
+        System.out.print("Hello and welcome!");
+        Customer customer = new Customer("Anil Kumar", "9521621023", 4.5, "Delhi", true );
+//
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory(); // Create a session factory instance that you've already
+//        defined in the package "com.learn.hiber.util.HibernateUtil.java";
+//        you've defined it in such a way that if you'll create an instance of it it'll open a session and once sessionFactory is created
+//        You don't need to create it again.
+
+//        System.out.println(sessionFactory);
+        Session session = sessionFactory.openSession(); // Open a current session and then do transaction within that
+        Transaction transaction = null; // Transaction will be called everytime while having interaction with the database;
+        try {
+            transaction=session.beginTransaction(); // this will flag the transaction incoming
+            session.persist(customer); // Save the object locally
+            transaction.commit();// This will save the data into database;
+            System.out.println("Customer saved successfully ");
+
+        } catch (Exception e) {
+            if (transaction!=null){
+                transaction.rollback();
+            }
+                e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+    }
+}
+```
+the customer class
+
+Customer.java
+```java
+package com.learn.hiber.entities;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="customer")
+public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long aadharId;
+
+    @Column(name = "customer_name",length = 50)
+    private String name;
+
+    @Column(name = "mobile_number",length=12, unique = true)
+    private String mobNo;
+    private double land;
+
+    @Lob
+    private String address;
+    private boolean eligible=true;
+
+    public void setAadharId(long aadharId){
+        this.aadharId=aadharId;
+    }
+    public long getAadharId(){
+        return aadharId;
+    }
+    public void setName(String name){
+        this.name=name;
+    }
+    public String getName(){
+        return getName();
+    }
+
+    public String getMobNo() {
+        return mobNo;
+    }
+
+    public void setMobNo(String mobNo) {
+        this.mobNo = mobNo;
+    }
+
+    public double getLand() {
+        return land;
+    }
+
+    public void setLand(double land) {
+        this.land = land;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public boolean isEligible() {
+        return eligible;
+    }
+
+    public void setEligible(boolean eligible) {
+        this.eligible = eligible;
+    }
+    public Customer( String name, String mobNo, double land, String address, boolean eligible){
+        this.name=name;
+        this.mobNo=mobNo;
+        this.land=land;
+        this.address=address;
+        this.eligible=eligible;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "aadharId=" + aadharId +
+                ", name='" + name + '\'' +
+                ", mobNo='" + mobNo + '\'' +
+                ", land=" + land +
+                ", address='" + address + '\'' +
+                ", eligible=" + eligible +
+                '}';
+    }
+}
+
+```

@@ -8,17 +8,18 @@
         <!-- Database connection settings -->
 <!--        database configuration-->
 
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hiber</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/learn_hiber</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root1234</property>
-        <property name="hibernate.connection.driver_class">com.mysql.dj.jdbc.Driver</property>
+        <property name="hibernate.connection.password">avi@10418</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <!-- JDBC dialect -->
 <!--        hibernate configuration-->
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 
         <!-- Show SQL in console -->
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
+<!--        // the ? ? ? ? ? kind of things you're seeing in your console is because of this-->
 
         <!-- Automatically create/update tables -->
         <property name="hibernate.hbm2ddl.auto">update</property>
