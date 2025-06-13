@@ -72,15 +72,6 @@ public class Customer {
         this.eligible=eligible;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "aadharId=" + aadharId +
-                ", name='" + name + '\'' +
-                ", mobNo='" + mobNo + '\'' +
-                ", land=" + land +
-                ", address='" + address + '\'' +
-                ", eligible=" + eligible +
-                '}';
+    public Customer() {
     }
 }

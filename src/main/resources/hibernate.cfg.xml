@@ -26,6 +26,8 @@
 
         <!-- Mapping xml/class -->
         <mapping class="com.learn.hiber.entities.Customer"/>
+        <mapping class="com.learn.hiber.entities.Company"/>
+        <mapping class="com.learn.hiber.entities.Product"/>
 
     </session-factory>
 </hibernate-configuration>
