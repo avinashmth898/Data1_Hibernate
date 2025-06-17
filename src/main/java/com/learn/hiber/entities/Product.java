@@ -16,6 +16,7 @@ public class Product {
     private double price;
 
     @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company company;
 
     public int getProduct_id() {
@@ -48,5 +49,11 @@ public class Product {
     }
 
     public Product() {
+    }
+    public Company getCompany(){
+        return company;
+    }
+    public void setCompany(Company company){
+        this.company=company;
     }
 }

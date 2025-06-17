@@ -17,9 +17,13 @@ public class Company {
     private String name;
 
     @OneToMany(mappedBy = "company")
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
     public int getCompany_Id() {
         return company_Id;
+    }
+    public void addProduct(Product product){
+        product.setCompany(this);
+        this.products.add(product);
     }
 
     public void setCompany_Id(int company_Id) {
@@ -36,6 +40,12 @@ public class Company {
 
     public Company(String name) {
         this.name = name;
+    }
+    public List<Product> getProducts(){
+        return products;
+    }
+    public void setProducts(List<Product> products){
+        this.products=products;
     }
 
     public Company() {
